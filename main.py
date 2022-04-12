@@ -2,6 +2,7 @@
 import requests
 import discord
 import os
+import re
 
 TOKEN = os.environ.get('DISCORD_TOKEN')
 API_KEY = os.environ.get('API_KEY')
@@ -52,10 +53,10 @@ async def on_reaction_add(reaction, user):
     text = reaction.message.content
     if len(str(text)) == 0 or "https:" in str(text) or "http:" in str(text):
         return
+    text = re.sub("[:<>].*[:<>]", "", text)
     embed = discord.Embed(title="Translation", description="Translation", color=0xffffff)
     embed.add_field(name="Original Text", value=text, inline=False)
     embed.add_field(name="Translated Test", value=get_translation(text, target=target), inline=False)
     await channel.send(embed=embed)
-
 
 client.run(TOKEN)
