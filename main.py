@@ -50,6 +50,8 @@ async def on_reaction_add(reaction, user):
     else:
         return
     text = reaction.message.content
+    if len(str(text)) == 0 or "https:" in str(text) or "http:" in str(text):
+        return
     embed = discord.Embed(title="Translation", description="Translation", color=0xffffff)
     embed.add_field(name="Original Text", value=text, inline=False)
     embed.add_field(name="Translated Test", value=get_translation(text, target=target), inline=False)
