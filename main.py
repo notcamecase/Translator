@@ -37,11 +37,20 @@ def get_translation(text, target):
 client = discord.Client()
 
 
+def get_translation_log(guild):
+    for channel in guild.channels:
+        if str(channel.name) == 'translation-log':
+            return channel
+    return 0
+
+
 @client.event
 async def on_reaction_add(reaction, user):
     if user.bot:
         return
-    channel = discord.utils.get(client.get_all_channels(), name='translation-log')
+    channel = get_translation_log(reaction.message.guild)
+    if channel == 0:
+        return
     if reaction.emoji == '🇪':
         target = 'en'
     elif reaction.emoji == '🇨':
@@ -58,5 +67,6 @@ async def on_reaction_add(reaction, user):
     embed.add_field(name="Original Text", value=text, inline=False)
     embed.add_field(name="Translated Test", value=get_translation(text, target=target), inline=False)
     await channel.send(embed=embed)
+
 
 client.run(TOKEN)
