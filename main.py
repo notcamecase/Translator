@@ -44,25 +44,42 @@ def get_translation_log(guild):
     return 0
 
 
+def validate_message_text(text):
+    if len(str(text)) == 0 or "https:" in str(text) or "http:" in str(text):
+        return False
+    return True
+
+
+def get_target_language(emoji):
+    if emoji == '🇪':
+        return 'en'
+    elif emoji == '🇨':
+        return 'zh-CN'
+    # elif reaction.emoji == '🇯':
+    #     target='ja'
+    else:
+        return ''
+
+
 @client.event
 async def on_reaction_add(reaction, user):
     if user.bot:
         return
+
     channel = get_translation_log(reaction.message.guild)
     if channel == 0:
         return
-    if reaction.emoji == '🇪':
-        target = 'en'
-    elif reaction.emoji == '🇨':
-        target = 'zh-CN'
-    # elif reaction.emoji == '🇯':
-    #     target='ja'
-    else:
-        return
+
     text = reaction.message.content
-    if len(str(text)) == 0 or "https:" in str(text) or "http:" in str(text):
+    text = re.sub("[:<>].*[:<>]", "", text)  # remove emojis in text message
+
+    if not validate_message_text(text):
         return
-    text = re.sub("[:<>].*[:<>]", "", text)
+
+    target = get_target_language(reaction.emoji)
+    if len(target) == 0:
+        return
+
     embed = discord.Embed(title="Translation", description="Translation", color=0xffffff)
     embed.add_field(name="Original Text", value=text, inline=False)
     embed.add_field(name="Translated Test", value=get_translation(text, target=target), inline=False)
