@@ -74,7 +74,7 @@ async def on_reaction_add(reaction, user):
         return
 
     text = reaction.message.content
-    text = re.sub("[:<>].*[:<>]", "", text)  # remove emojis in text message
+    text = re.sub("[:<>].*[:<>]", "", text)  ## remove emojis in text message
 
     if not validate_message_text(text):
         return
