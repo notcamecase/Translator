@@ -10,7 +10,7 @@ API_KEY = os.environ.get('API_KEY')
 
 def get_translation(text, target):
     url = "https://microsoft-translator-text.p.rapidapi.com/translate"
-
+    translated_text = ''
     querystring = {"to": "{}".format(target), "api-version": "3.0", "profanityAction": "NoAction", "textType": "plain"}
     payload = [{"Text": "{}".format(text)}]
     headers = {
@@ -27,11 +27,14 @@ def get_translation(text, target):
         return "Invalid JSON"
 
     try:
-        response.json()[0]["translations"][0]["text"]
+        translated_text = response.json()[0]["translations"][0]["text"]
     except (KeyError, IndexError, ValueError):
         return "PARSING ERROR"
 
-    return response.json()[0]["translations"][0]["text"]
+    if translated_text == '':
+        return 'Failed to get Translation'
+
+    return translated_text
 
 
 client = discord.Client()
