@@ -73,6 +73,9 @@ async def on_reaction_add(reaction, user):
     if channel == 0:
         return
 
+    if reaction.count > 1:
+        return
+
     text = reaction.message.content
     text = re.sub("[:<>].*[:<>]", "", text)  ## remove emojis in text message
 
