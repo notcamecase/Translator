@@ -1,7 +1,7 @@
 # Translator
 Discord Bot
 
-Probably the most cleanest translation bot
+Probably the most cleanest translation bot on Discord
 
 ---
 
