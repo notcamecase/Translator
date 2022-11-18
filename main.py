@@ -58,8 +58,8 @@ def get_target_language(emoji):
         return 'en'
     elif emoji == '🇨':
         return 'zh-CN'
-    # elif reaction.emoji == '🇯':
-    #     target='ja'
+    elif reaction.emoji == '🇯':
+         target='ja'
     else:
         return ''
 
